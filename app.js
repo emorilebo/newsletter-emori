@@ -1,6 +1,7 @@
 const express = require("express");
 const request = require("request");
 const bodyParser = require("body-parser");
+const https = require("https");
 
 const app = express();
 
@@ -29,6 +30,28 @@ app.post("/", (req, res) => {
         ]
     };
     var jsonData = JSON.stringify(data);
+
+    const url = "https://us1.api.mailchimp.com/3.0/lists/c692795ec6"
+
+    const options = {
+        method: "POST",
+        auth: "emori1:302db5c0d7dce9ab75e94227bb2aea83-us1"
+    }
+
+    const request = https.request(url, options, (response)=> {
+
+        if(response.statusCode === 200) {
+            res.sendFile(__dirname + "/success.html");
+        }else{
+            res.send(__dirname + "/failure.html");
+        }
+
+        response.on('data', function (data) {
+            console.log(JSON.parse(data))
+        })
+    })
+    request.write(jsonData)
+    request.end()
 })
 
 app.listen(3000, () => {
