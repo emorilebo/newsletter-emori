@@ -50,8 +50,12 @@ app.post("/", (req, res) => {
             console.log(JSON.parse(data))
         })
     })
-    request.write(jsonData)
+    //request.write(jsonData)
     request.end()
+})
+
+app.post('/failure',(req, res)=>{
+    res.redirect('/')
 })
 
 app.listen(3000, () => {
